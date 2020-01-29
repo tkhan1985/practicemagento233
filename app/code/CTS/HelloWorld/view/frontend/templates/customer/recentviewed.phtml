@@ -1,0 +1,35 @@
+<table border="1">
+   <tr style="font-weight:bold">
+      <td>Product Image</td>
+      <td>Product Name</td>
+      <td>Product Type</td>
+      <td>Price</td>
+      <td>Viewed On</td>
+   </tr>
+<?php
+   foreach($this->getMostRecentlyViewed()->getData() as $product) {
+   $_imgUrl = $this->getProductImage($product['product_id']);
+   ?>
+   <tr>
+      <td>
+         <a href='<?=$this->getProductUrl($product["product_id"]) ?>'>
+               <img src="<?=$_imgUrl; ?>" class='image' title="product image" width='40' height='40'/>
+         </a>
+      </td>
+      <td><?= $product['sku']?></td>
+      <td><?= ucfirst($product['type_id'])?></td>
+      <td><?= $product['type_id'] == 'configurable' ?
+      'Min :'.number_format($product['min_price'], 2). ' and Max : '.
+      number_format($product['max_price'],2) : number_format($product['price'],2)
+      ?></td>
+      <td><?= $product['added_at']?></td>
+   </tr>
+<?php } ?>
+<tr>
+   <td colspan='5'>
+      <?php if ($block->getPagerHtml()): ?>
+           <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+       <?php endif ?>
+   </td>
+</tr>
+</table>

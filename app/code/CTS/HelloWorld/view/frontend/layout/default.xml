@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<referenceContainer name="content">
+    <referenceBlock name="catalog.compare.sidebar" remove="true" />
+    <referenceContainer name="sidebar.additional" remove="true" />
+	<referenceBlock name="wishlist_sidebar" remove="true"/>
+ </referenceContainer>

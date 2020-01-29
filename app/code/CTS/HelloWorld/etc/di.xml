@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Add Plugin for add custom link in navigation -->
+    <type name="Magento\Theme\Block\Html\Topmenu">
+        <plugin name="add_menu_item_plugin" type="CTS\HelloWorld\Plugin\Topmenu" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="CTS\HelloWorld\Model\ResourceModel\Item\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">cts_helloworld_items</argument>
+            <argument name="eventPrefix" xsi:type="string">cts_helloworld_item_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">item_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">CTS\HelloWorld\Model\ResourceModel\Item</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+      <arguments>
+           <argument name="collections" xsi:type="array">
+               <item name="helloworld_items_grid_data_source" xsi:type="string">CTS\HelloWorld\Model\ResourceModel\Item\Grid\Collection</item>
+           </argument>
+      </arguments>
+  </type>
+</config>

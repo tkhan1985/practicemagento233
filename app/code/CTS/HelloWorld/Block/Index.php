@@ -1,0 +1,189 @@
+<?php
+/**
+*
+* @package Magento2
+* @author Toufique Khan
+* @created 03/01/2020
+ *
+ */
+
+namespace CTS\HelloWorld\Block;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\View\Element\Template;
+use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Checkout\Model\Cart as CartSession;
+use CTS\HelloWorld\Model\ResourceModel\Item\Collection;
+use CTS\HelloWorld\Model\ResourceModel\Item\CollectionFactory;
+
+use Magento\Framework\Event\ManagerInterface as EventManager;
+
+
+class Index extends Template
+{
+   protected $_objectManager;
+   protected $_customerSession;
+   protected $_cartSession;
+   protected $itemscollectionFactory;
+   public $eventData;
+
+   const ADD_ITEM_PATH = 'helloworld/item/add';
+
+   const DELETE_ITEM_PATH = 'helloworld/item/delete';
+
+   /*public function __construct(
+      Context $context,
+      ObjectManager $objectManager,
+      //CartSession $cartSession,
+      //CustomerSession $customerSession,
+      array $data = []
+      )
+   {
+      $this->_objectManager = $objectManager;
+      //$this->_cartSession = $cartSession;
+      //$this->_customerSession = $customerSession;
+
+      parent::__construct($context, $data);
+   }*/
+
+   /**
+     * @var Collection
+     */
+    private $collection;
+
+    /**
+   * @var EventManager
+   */
+   private $eventManager;
+
+    /**
+     * Hello constructor.
+     * @param Template\Context $context
+     * @param Collection $collection
+     * @param array $data
+     */
+    public function __construct(
+        Template\Context $context,
+        Collection $collection,
+        CollectionFactory $collectionFactory,
+        EventManager $eventManager,
+        array $data = []
+    )
+    {
+        parent::__construct($context, $data);
+        $this->collection = $collection;
+        $this->itemscollectionFactory = $collectionFactory;
+        $this->eventManager = $eventManager;
+    }
+
+    //This Method is for pagination
+    protected function _prepareLayout()
+   {
+       parent::_prepareLayout();
+       $this->pageConfig->getTitle()->set(__('Hello World Module'));
+       if ($this->getItems()) {
+           $pager = $this->getLayout()->createBlock(
+               'Magento\Theme\Block\Html\Pager',
+               'cts.helloworld.pager'.rand(2,100)
+           )->setAvailableLimit(array(2=>2,5=>5,10=>10,15=>15))->setShowPerPage(true)->setCollection(
+               $this->getItems()
+           );
+           $this->setChild('pager', $pager);
+           $this->getItems()->load();
+       }
+       return $this;
+   }
+
+   public function getObjectManagerInstance()
+   {
+     return ObjectManager::getInstance();
+   }
+
+   public function getSessionObject($sessionType)
+   {
+      switch($sessionType) {
+         case 'customer':
+            $instance = $this->getObjectManagerInstance()->get('\Magento\Customer\Model\Session');
+            break;
+         case 'cart':
+            $instance = $this->getObjectManagerInstance()->get('\Magento\Checkout\Model\Cart');
+            break;
+         case 'catalog':
+            $instance = $this->getObjectManagerInstance()->get('\Magento\Catalog\Model\Session');
+            break;
+         case 'checkout':
+            $instance = $this->getObjectManagerInstance()->get('\Magento\Checkout\Model\Session');
+            break;
+         case 'backend':
+            $instance = $this->getObjectManagerInstance()->get('\Magento\Backend\Model\Session');
+            break;
+         case 'newsletter':
+            $instance = $this->getObjectManagerInstance()->get('\Magento\Newsletter\Model\Session');
+            break;
+      }
+
+      return $instance;
+   }
+
+
+   public function getQuote($obj)
+   {
+      return $obj->getQuote();
+   }
+
+   public function getProductData($quoteObj)
+   {
+     return $productInfo = $quoteObj->getItemsCollection();
+    //$productInfo = $this->_cart->getQuote()->getAllItems(); /*****For All items *****/
+   }
+
+   public function getCustomerData($customerObj)
+   {
+      return $customerObj->getCustomer();
+   }
+
+   public function getAllItems()
+   {
+        return $this->collection;
+    }
+
+    public function getAddItemPostUrl() {
+        return $this->getUrl(self::ADD_ITEM_PATH);
+    }
+
+    public function getDeleteItemUrl() {
+        return $this->getUrl(self::DELETE_ITEM_PATH);
+    }
+
+    //This Method is for listing the items and pagination
+    public function getItems()
+    {
+       $dataobject = new \Magento\Framework\DataObject(array('label' => 'Before Item Collection'));
+       $observer = $this->eventManager->dispatch('hello_world_before_item_event', ['text' => $dataobject]);
+       $this->eventData = $dataobject->getText();
+      //get values of current page. if not the param value then it will set to 1
+        $page=($this->getRequest()->getParam('p'))? $this->getRequest()->getParam('p') : 1;
+    //get values of current limit. if not the param value then it will set to 1
+        $pageSize=($this->getRequest()->getParam('limit'))? $this->getRequest()->getParam('limit') : 2;
+        $itemsCollection = $this->itemscollectionFactory->create();
+        $itemsCollection->setPageSize($pageSize);
+        $itemsCollection->setCurPage($page);
+        //$afterObserver = $this->eventManager->dispatch('hello_world_after_item_event', ['data' => $itemsCollection]);
+        return $itemsCollection;
+    }
+
+    public function getEventData()
+    {
+      return $this->eventData;
+    }
+
+    //This Method is for pagination
+    public function getPagerHtml()
+   {
+       return $this->getChildHtml('pager');
+   }
+
+   public function getOrderTables()
+   {
+      return \CTS\HelloWorld\Helper\Constant::ORDER_TABLES;
+   }
+}

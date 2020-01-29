@@ -1,0 +1,138 @@
+<h2>welcome to new module </h2>
+<?php
+/* @var \CTS\HelloWorld\Block\Index $block */
+
+  echo $this->getLayout()
+  ->createBlock('Magento\Cms\Block\Block')
+  ->setBlockId('first_custom_block')
+  ->toHtml();
+
+$omi = $block->getObjectManagerInstance();
+$cart = $block->getSessionObject('cart');
+$quote = $block->getQuote($cart);
+//var_dump($block->getLoggedinCustomerId());
+$customer = $block->getSessionObject('customer');
+$catalog = $this->getSessionObject('catalog');
+$items = $block->getItems(); // We can use either $block or $this both can work
+
+
+$catalog->setMyTitle('Hello World in Catalog Session');
+echo '<div style="color:green;font-weight:bold">Retriving From Catalog Session : </div>';
+echo $catalog->getMyTitle() . '</br></br>'; // output: Hello World in Catalog Session
+
+if(!$customer->isLoggedIn()) {
+   echo '<br/><div style="color:red;font-weight:bold">Customer is not Logged in</div><br/>';
+} else {
+   echo '<br/><div style="color:green;font-weight:bold">Retriving From Customer Session</div><br/>';
+   echo '<table border="1"><tr><td>Customer Name : </td><td>'.$this->getCustomerData($customer)->getName().'</td></tr>
+         <tr><td>Customer Email : </td><td>'.$this->getCustomerData($customer)->getEmail().'</td></tr></table>';
+}
+?>
+
+<br/><div style="color:green;font-weight:bold">Retriving From Checkout Sesion</div><br/>
+<table border="1">
+   <?php
+      if(empty($quote->getEntityId())){
+         echo '<tr>
+            <td colspan="4" style="color:red">No Product In The Cart</td>
+         </tr>';
+      } else {
+      ?>
+         <tr style="font-weight:bold">
+            <td>Product Name</td>
+            <td>Product Type</td>
+            <td>Base Price</td>
+            <td>Selling Price</td>
+         </tr>
+         <?php
+            foreach ($block->getProductData($quote) as $item) {
+         ?>
+         <tr>
+            <td><?= $item->getName()?></td>
+            <td><?= $item->getProductType()?></td>
+            <td><?= number_format($item->getBasePrice(),2)?></td>
+            <td><?= number_format($item->getPriceInclTax(),2)?></td>
+         </tr>
+         <?php         #code...
+            }
+          ?>
+          <tr style="font-weight:bold">
+            <td colspan=3>Total Product :</td>
+            <td><?= $quote->getItemsCount()?></td>
+         </tr>
+         <tr style="font-weight:bold">
+           <td colspan=3 >Grand Total :</td>
+           <td><?= number_format($quote->getGrandTotal(),2)?></td>
+        </tr>
+      <?php
+      }
+    ?>
+</table>
+<?php if($customer->isLoggedIn()) { ?>
+      <br/><div style="color:green;font-weight:bold"><?= $this->getEventData();?></div><br/>
+      <br/><div style="color:green;font-weight:bold">Retriving From Database using Model, resourceModel and Collection</div><br/>
+      <table border="1">
+            <tr>
+                <th><?= __("ID") ?></th>
+                <th><?= __("Item Name") ?></th>
+                <th> <?= __("Feature Image") ?></th>
+                <th> <?= __("Created Date") ?></th>
+                <th> <?= __("Action") ?></th>
+            </tr>
+             <?php foreach ($items as $item): ?>
+                  <tr>
+                     <td><?= $item->getId() ?></td>
+                     <td><?= $item->getName() ?></td>
+                     <td><?= $item->getFeaturedImage() ?></td>
+                     <td><?= $item->getCreatedAt() ?></td>
+                     <td><a href="<?= $block->getDeleteItemUrl()?>itemId/<?= $item->getId()?>" class="delete_item">Delete </a></td>
+                 </tr>
+            <?php endforeach; ?>
+            <tr>
+               <td colspan='5'>
+                  <?php if ($block->getPagerHtml()): ?>
+                       <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+                   <?php endif ?>
+               </td>
+            </tr>
+          </table>
+
+          <br/><div style="color:green;font-weight:bold">Adding New Item into Database using Model, resourceModel and Collection</div><br/>
+             <form method="post" action="<?= $block->getAddItemPostUrl() ?>">
+                 <fieldset>
+                    <div>
+                          <label for="itemName"><?= __("Item Name") ?></label>
+                         <input type="text" name="name" id="itemName" />
+                    </div>
+                    <div>
+                          <label for="featureImage"><?= __("Feature Image") ?>
+                         <input type="text" name="featured_image" id="featureImage" />
+                    </div>
+                    <div>
+                          <label for="createdAt"><?= __("Created At") ?>
+                         <input type="text" name="created_at" id="createdAt" value= "<?= date('Y-m-d h:i:s')?>" readonly/>
+                    </div>
+                    <input type="submit" value="<?= __("Add Item") ?>" />
+                 </fieldset>
+           </form>
+
+           <br/><div style="color:green;font-weight:bold">List of tables used during placing order</div><br/>
+<?php
+         foreach($this->getOrderTables() as $type => $data) {
+            echo '<table style="border: 1px solid orange;box-shadow: 2px 2px green;"><tr><td colspan="2" style="font-weight:bold">List of tables for '.$type .'</td></tr>';
+            echo '<tr style="font-weight:bold;color:orange"><td>Table Name</td><td>Table Description</td></tr>';
+            foreach($data as $tableName => $tableDesc){
+               echo '<tr><td style="font-weight:bold">'.$tableName.'</td><td>'.$tableDesc.'</td></tr>';
+            }
+            echo '</table>';
+         }
+} ?>
+
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "ctshw": ""
+        }
+    }
+</script>

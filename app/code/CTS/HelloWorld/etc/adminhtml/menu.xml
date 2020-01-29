@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="CTS_HelloWorld::custom" title="Custom Module" module="CTS_HelloWorld" sortOrder="50" resource="CTS_HelloWorld::custom"/>
+        <add id="CTS_HelloWorld::index" title="Hello World" module="CTS_HelloWorld" sortOrder="0" parent="CTS_HelloWorld::custom"
+                action="helloworld/index" resource="CTS_HelloWorld::index"/>
+    </menu>
+</config>

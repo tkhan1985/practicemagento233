@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="CTS\HelloWorld\Block\Index" name="helloworld_index_index" template="CTS_HelloWorld::index.phtml" />
+            <referenceBlock name="wishlist_sidebar" remove="true"/>
+            <!-- <uiComponent name="helloworld_items_grid" /> -->
+        </referenceContainer>
+    </body>
+</page>
