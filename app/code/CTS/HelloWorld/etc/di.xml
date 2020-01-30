@@ -20,4 +20,5 @@
            </argument>
       </arguments>
   </type>
+  <preference for="Magento\Cms\Controller\Index\Index" type="CTS\HelloWorld\Controller\Index\ExtendIndex" /> 
 </config>
