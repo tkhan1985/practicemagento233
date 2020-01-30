@@ -10,7 +10,6 @@
 namespace CTS\HelloWorld\Block;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\View\Element\Template;
-use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Checkout\Model\Cart as CartSession;
 use CTS\HelloWorld\Model\ResourceModel\Item\Collection;
 use CTS\HelloWorld\Model\ResourceModel\Item\CollectionFactory;
@@ -95,26 +94,27 @@ class Index extends Template
 
    public function getObjectManagerInstance()
    {
-     return ObjectManager::getInstance();
+      $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+     return $objectManager;
    }
 
    public function getSessionObject($sessionType)
    {
       switch($sessionType) {
          case 'customer':
-            $instance = $this->getObjectManagerInstance()->get('\Magento\Customer\Model\Session');
+            $instance = $this->getObjectManagerInstance()->create('\Magento\Customer\Model\Session');
             break;
          case 'cart':
             $instance = $this->getObjectManagerInstance()->get('\Magento\Checkout\Model\Cart');
             break;
          case 'catalog':
-            $instance = $this->getObjectManagerInstance()->get('\Magento\Catalog\Model\Session');
+            $instance = $this->getObjectManagerInstance()->create('\Magento\Catalog\Model\Session');
             break;
          case 'checkout':
-            $instance = $this->getObjectManagerInstance()->get('\Magento\Checkout\Model\Session');
+            $instance = $this->getObjectManagerInstance()->create('\Magento\Checkout\Model\Session');
             break;
          case 'backend':
-            $instance = $this->getObjectManagerInstance()->get('\Magento\Backend\Model\Session');
+            $instance = $this->getObjectManagerInstance()->create('\Magento\Backend\Model\Session');
             break;
          case 'newsletter':
             $instance = $this->getObjectManagerInstance()->get('\Magento\Newsletter\Model\Session');

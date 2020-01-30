@@ -1,13 +1,6 @@
 <h2>welcome to new module </h2>
 <?php
 /* @var \CTS\HelloWorld\Block\Index $block */
-
-  echo $this->getLayout()
-  ->createBlock('Magento\Cms\Block\Block')
-  ->setBlockId('first_custom_block')
-  ->toHtml();
-
-$omi = $block->getObjectManagerInstance();
 $cart = $block->getSessionObject('cart');
 $quote = $block->getQuote($cart);
 //var_dump($block->getLoggedinCustomerId());
