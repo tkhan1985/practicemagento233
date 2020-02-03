@@ -274,7 +274,7 @@ if ($showproducts) {
                                             <?php /* @escapeNotVerified */ echo $block->getProductPrice($_item); ?>
 
                                             <?php if ($templateType): ?>
-                                                <?php echo $block->getReviewsSummaryHtml($_item, $templateType) ?>
+                                                <?php #echo $block->getReviewsSummaryHtml($_item, $templateType) ?>
                                             <?php endif; ?>
 
                                             <?php if (!$_item->isComposite() && $_item->isSaleable() && $type == 'related'): ?>
