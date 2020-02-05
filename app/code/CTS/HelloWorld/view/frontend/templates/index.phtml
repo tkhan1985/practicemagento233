@@ -92,22 +92,32 @@ if(!$customer->isLoggedIn()) {
           </table>
 
           <br/><div style="color:green;font-weight:bold">Adding New Item into Database using Model, resourceModel and Collection</div><br/>
-             <form method="post" action="<?= $block->getAddItemPostUrl() ?>">
-                 <fieldset>
-                    <div>
-                          <label for="itemName"><?= __("Item Name") ?></label>
-                         <input type="text" name="name" id="itemName" />
+             <form data-mage-init='{"validation": {}}' class="form" id="custom-form" method="post" autocomplete="off" action="<?= $block->getAddItemPostUrl() ?>">
+                 <fieldset class="fieldset">
+                    <div class="field required">
+                         <label for="itemName" class="label"><span><?= __("Item Name") ?></span></label>
+                         <div class="control">
+                            <input type="text" name="name" id="itemName" title="<?php echo __('Item Name') ?>" class="input-text" data-validate="{required:true, minlength:5, maxlength:10, 'validate-alphanum-with-spaces' : true}"/>
+                         </div>
                     </div>
                     <div>
-                          <label for="featureImage"><?= __("Feature Image") ?>
-                         <input type="text" name="featured_image" id="featureImage" />
+                          <label for="featureImage" class="label"><span><?= __("Feature Image") ?></span></label>
+                          <div class="control">
+                            <input type="text" name="featured_image" id="featureImage" title="<?php echo __('Feature Image') ?>" class="input-text" data-validate="{required:true, 'validate-url' : true}"/>
+                         </div>
                     </div>
                     <div>
-                          <label for="createdAt"><?= __("Created At") ?>
-                         <input type="text" name="created_at" id="createdAt" value= "<?= date('Y-m-d h:i:s')?>" readonly/>
+                          <label for="createdAt" class="label"><span><?= __("Created At") ?></span>
+                          <div class="control">
+                            <input type="text" name="created_at" id="createdAt" title="<?php echo __('Created At') ?>" class="input-text" value= "<?= date('Y-m-d h:i:s')?>" data-validate="{required:true, date : true}" readonly/>
+                          </div>
                     </div>
-                    <input type="submit" value="<?= __("Add Item") ?>" />
                  </fieldset>
+                 <div class="actions-toolbar">
+                      <div class="primary">
+                          <button type="submit" class="action submit primary" title="<?php  echo __('Add Item') ?>"><span><?php echo __('Add Item') ?></span></button>
+                      </div>
+                 </div>
            </form>
 
            <br/><div style="color:green;font-weight:bold">List of tables used during placing order</div><br/>
