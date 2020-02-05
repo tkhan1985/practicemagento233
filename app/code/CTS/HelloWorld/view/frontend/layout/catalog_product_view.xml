@@ -3,5 +3,12 @@
     <body>
         <referenceBlock name="product.info.review" remove="true" />
         <referenceBlock name="reviews.tab" remove="true" />
+        <referenceContainer name="product.info.main">
+            <block class="CTS\HelloWorld\Block\Index"
+                   name="product.view.extra"
+                   template="CTS_HelloWorld::extra.phtml"
+                   after="product.info.overview">
+            </block>
+        </referenceContainer>
     </body>
 </page>

@@ -1,0 +1,17 @@
+<?php
+   if(in_array($block->getCurrentProduct()->getTypeId(), $block->getProductTypeForCustomBlock())) {
+ ?>
+   <div class="product-view-extra" style="border: 1px solid dodgerblue;padding: 2%;box-shadow: 4px 4px #b3d9ff;">
+      <h3>This is the custom block only available for <?= implode(", ", $block->getProductTypeForCustomBlock())?> product type.</h1>
+      <?php
+         $html = $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('customProductBlock')->toHtml();
+           if($html != '') {
+            echo '<div>'. $html .'</div>';
+         } else {
+            echo '<div style="color:red">Custom block is not available</div>';
+         }
+      ?>
+   </div>
+<?php
+ }//End of If
+ ?>

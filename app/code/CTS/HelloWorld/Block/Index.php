@@ -29,6 +29,8 @@ class Index extends Template
 
    const DELETE_ITEM_PATH = 'helloworld/item/delete';
 
+   const PRODUCT_TYPE = ['simple', 'bundle'];
+
    /*public function __construct(
       Context $context,
       ObjectManager $objectManager,
@@ -185,5 +187,15 @@ class Index extends Template
    public function getOrderTables()
    {
       return \CTS\HelloWorld\Helper\Constant::ORDER_TABLES;
+   }
+
+   public function getCurrentProduct()
+   {
+      return $this->getObjectManagerInstance()->get('Magento\Framework\Registry')->registry('current_product'); //get current product
+   }
+
+   public function getProductTypeForCustomBlock()
+   {
+      return self::PRODUCT_TYPE;
    }
 }
