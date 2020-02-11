@@ -1,0 +1,18 @@
+<?php
+   if(!$this->getReward()) {
+      echo "<h2 style='background-color:red;color:yellow;font-size:12px;padding:4px'>
+               You are not eligible to get additional discount.
+            </h2>";
+   } else {
+      ?>
+         <h2 style='background-color:yellow;color:blue;font-size:12px;padding:4px'>
+            Your additional discount code
+         </h2>
+         <h3 style='font-weight:bold;color:blue;font-size:12px'>Coupon Code :
+            <span style="background-color:yellow;padding:4px">
+               <?= $this->getReward()?>
+            </span>
+         </h3>
+      <?php
+   }
+?>

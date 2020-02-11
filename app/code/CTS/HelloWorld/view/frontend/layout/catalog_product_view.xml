@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="product.info.review" remove="true" />
-        <referenceBlock name="reviews.tab" remove="true" />
+      <!-- Add Custom block in product detail page -->
         <referenceContainer name="product.info.main">
             <block class="CTS\HelloWorld\Block\Index"
                    name="product.view.extra"
@@ -10,5 +9,31 @@
                    after="product.info.overview">
             </block>
         </referenceContainer>
+
+        <!-- Remove add to compare option from related product -->
+        <referenceBlock name="related.product.addto.compare" remove="true" />
+         <!-- Remove add to wishlist option from related product -->
+        <referenceBlock name="related.product.addto.wishlist" remove="true" />
+
+        <referenceBlock name="catalog.compare.link" remove="true" />
+
+        <referenceBlock name="catalog.wishlist.link" remove="true" />
+
+
+        <!-- Remove review tab from product detail page -->
+        <referenceBlock name="product.info.review" remove="true" />
+        <referenceBlock name="reviews.tab" remove="true" />
+
+      <!-- Complete List of Add to compare -->
+      <!--
+      <referenceBlock name="catalog.compare.link" remove="true" />
+      <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+      <referenceBlock name="catalogsearch.product.addto.compare" remove="true"/>
+      <referenceBlock name="category.product.addto.compare" remove="true"/>
+      <referenceBlock name="crosssell.product.addto.compare" remove="true" />
+      <referenceBlock name="related.product.addto.compare" remove="true" />
+      <referenceBlock name="upsell.product.addto.compare" remove="true" />
+      <referenceBlock name="view.addto.compare" remove="true" />
+      -->
     </body>
 </page>

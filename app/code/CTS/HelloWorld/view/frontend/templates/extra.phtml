@@ -1,17 +1,48 @@
 <?php
    if(in_array($block->getCurrentProduct()->getTypeId(), $block->getProductTypeForCustomBlock())) {
  ?>
-   <div class="product-view-extra" style="border: 1px solid dodgerblue;padding: 2%;box-shadow: 4px 4px #b3d9ff;">
-      <h3>This is the custom block only available for <?= implode(", ", $block->getProductTypeForCustomBlock())?> product type.</h1>
+   <div class="product-view-extra" style="border: 1px dotted dodgerblue;padding: 2%;box-shadow: 4px 4px 13px 6px #b3d9ff;">
+      <h3>This is the additional reward only available for <?= implode(" and ", $block->getProductTypeForCustomBlock())?> product type.</h1>
       <?php
          $html = $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('customProductBlock')->toHtml();
            if($html != '') {
             echo '<div>'. $html .'</div>';
+            ?>
+            <form data-mage-init='{"validation": {}}' class="form" id="additional_reward" autocomplete="on">
+               <fieldset class="fieldset">
+                   <div class="field required">
+                        <label for="emailId" class="label"><span><?= __("Email Id") ?></span></label>
+                        <div class="control">
+                           <input type="text" name="emailId" id="emailId" title="<?php echo __('Email Id') ?>" class="input-text" data-validate="{required:true, email: true}"/>
+                        </div>
+                   </div>
+                   <div class="field required">
+                        <label for="yob" class="label"><span><?= __("Year Of Birth") ?>(YYYY)</span></label>
+                        <div class="control">
+                           <input type="text" name="yob" id="yob" title="<?php echo __('Year Of Birth') ?>" class="input-text" data-validate="{required:true, number: true, minlength: 4, maxlength: 4}"/>
+                        </div>
+                   </div>
+                   <div class="actions-toolbar">
+                        <div class="primary">
+                           <button type="button" id='getReward' class="action submit primary" title="<?php  echo __('Get Reward') ?>"><span><?php echo __('Get Reward') ?></span></button>
+                        </div>
+                   </div>
+                </fieldset>
+            </form>
+            <div id="ajaxresponse"></div>
+            <?php
          } else {
-            echo '<div style="color:red">Custom block is not available</div>';
+            echo '<div style="color:red">Reward is not available</div>';
          }
       ?>
    </div>
+   <script type="text/x-magento-init">
+       {
+           "*": {
+               "ctshwreward": ""
+           }
+       }
+   </script>
 <?php
  }//End of If
  ?>
