@@ -77,7 +77,7 @@ class Reward extends Template
       ->setCouponType(2)
       ->setCouponCode($coupon['code'])
       ->setUsesPerCoupon(1);
-      $shoppingCartPriceRule->save();`
+      $shoppingCartPriceRule->save();
    }
 
 }
