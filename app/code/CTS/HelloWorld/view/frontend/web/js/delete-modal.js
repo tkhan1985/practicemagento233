@@ -20,6 +20,7 @@ function($, confirmation) {
                          success: function (data) {
                               //$(this).parents("tr").remove();
                               window.location.reload(true);
+                              //window.location.href = '/helloworld';
                         }, error: function (error) {
 
                         }

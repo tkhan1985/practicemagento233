@@ -7,13 +7,14 @@ use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use CTS\HelloWorld\Model\ItemFactory;
+use CTS\HelloWorld\Block\Index as ItemBlock;
 
 class Delete extends Action
 {
     /**
      * @var Item
      */
-    private $_modelItemFactory;
+     private $_modelItemFactory;
 
     /**
      * Add constructor.
@@ -46,6 +47,21 @@ class Delete extends Action
         $sampleModel = $this->_modelItemFactory->create();
         $item = $sampleModel->load($itemId);
         try {
+           /** @var \Magento\Framework\App\ObjectManager $om */
+         	$om = \Magento\Framework\App\ObjectManager::getInstance();
+         	/** @var \Magento\Framework\Filesystem $filesystem */
+         	//$filesystem = $om->get('Magento\Framework\Filesystem');
+
+            $file = $om->get('Magento\Framework\Filesystem\Driver\File');
+         	/** @var \Magento\Framework\Filesystem\Directory\ReadInterface|\Magento\Framework\Filesystem\Directory\Read $reader */
+         	//$reader = $filesystem->getDirectoryRead(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
+         	//$mediaRootDir = $reader->getAbsolutePath('custom_image');
+            $mediaRootDir = ItemBlock::getItemImageAbsPath();
+            $fileName = $item['featured_image'];
+            if ($file->isExists($mediaRootDir . $fileName)) {
+               $file->deleteFile($mediaRootDir . $fileName);
+            }
+
             /* Use the resource model to save the model in the DB */
             $item->delete();
             $this->messageManager->addSuccessMessage("Item deleted successfully!");

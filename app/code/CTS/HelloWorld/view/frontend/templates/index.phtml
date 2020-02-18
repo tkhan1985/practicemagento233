@@ -77,7 +77,10 @@ if(!$customer->isLoggedIn()) {
                   <tr>
                      <td><?= $item->getId() ?></td>
                      <td><?= $item->getName() ?></td>
-                     <td><?= $item->getFeaturedImage() ?></td>
+                     <td>
+                        <img style="cursor: pointer;" id="<?= $item->getId() ?>" class="main-block-image" data-id="<?= $item->getId() ?>" src="<?= $this->getItemMediaImageUrl().$item->getFeaturedImage() ?>" width='30px' height='30px'>
+                        <div id="display-actual-image-<?= $item->getId() ?>"></div>
+                     </td>
                      <td><?= $item->getCreatedAt() ?></td>
                      <td><a href="<?= $block->getDeleteItemUrl()?>itemId/<?= $item->getId()?>" class="delete_item">Delete </a></td>
                  </tr>
@@ -91,8 +94,8 @@ if(!$customer->isLoggedIn()) {
             </tr>
           </table>
 
-          <br/><div style="color:green;font-weight:bold">Adding New Item into Database using Model, resourceModel and Collection</div><br/>
-             <form data-mage-init='{"validation": {}}' class="form" id="custom-form" method="post" autocomplete="off" action="<?= $block->getAddItemPostUrl() ?>">
+          <br/><div style="color:green;font-weight:bold;">Adding New Item into Database using Model, resourceModel and Collection</div><br/>
+             <form style="border:1px solid blue;padding:4px;" data-mage-init='{"validation": {}}' class="form" id="custom-form" method="post" autocomplete="off" enctype='multipart/form-data' action="<?= $block->getAddItemPostUrl() ?>">
                  <fieldset class="fieldset">
                     <div class="field required">
                          <label for="itemName" class="label"><span><?= __("Item Name") ?></span></label>
@@ -100,11 +103,11 @@ if(!$customer->isLoggedIn()) {
                             <input type="text" name="name" id="itemName" title="<?php echo __('Item Name') ?>" class="input-text" data-validate="{required:true, minlength:5, maxlength:10, 'validate-alphanum-with-spaces' : true}"/>
                          </div>
                     </div>
-                    <div>
-                          <label for="featureImage" class="label"><span><?= __("Feature Image") ?></span></label>
-                          <div class="control">
-                            <input type="text" name="featured_image" id="featureImage" title="<?php echo __('Feature Image') ?>" class="input-text" data-validate="{required:true, 'validate-url' : true}"/>
-                         </div>
+                    <div class="field image">
+                       <label class="label" for="featureImage"><span><?php /* @escapeNotVerified */ echo __("Feature Image") ?></span></label>
+                       <div class="control">
+                           <input name="featured_image" id="featureImage" title="<?php /* @escapeNotVerified */ echo __("Feature Image") ?>"   type="file" data-validate="{required:true}"/>
+                       </div>
                     </div>
                     <div>
                           <label for="createdAt" class="label"><span><?= __("Created At") ?></span>
@@ -136,7 +139,8 @@ if(!$customer->isLoggedIn()) {
 <script type="text/x-magento-init">
     {
         "*": {
-            "ctshw": ""
+            "ctshw": "",
+            "ctshwpopup": ""
         }
     }
 </script>

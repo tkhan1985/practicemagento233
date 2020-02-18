@@ -31,6 +31,8 @@ class Index extends Template
 
    const PRODUCT_TYPE = ['simple', 'bundle'];
 
+   const ITEM_PATH = 'custom_image';
+
    /*public function __construct(
       Context $context,
       ObjectManager $objectManager,
@@ -197,5 +199,28 @@ class Index extends Template
    public function getProductTypeForCustomBlock()
    {
       return self::PRODUCT_TYPE;
+   }
+
+   static function getItemImageAbsPath()
+   {
+      $om = \Magento\Framework\App\ObjectManager::getInstance();
+      /** @var \Magento\Framework\Filesystem $filesystem */
+      $filesystem = $om->get('Magento\Framework\Filesystem');
+
+      $file = $om->get('Magento\Framework\Filesystem\Driver\File');
+      /** @var \Magento\Framework\Filesystem\Directory\ReadInterface|\Magento\Framework\Filesystem\Directory\Read $reader */
+      $reader = $filesystem->getDirectoryRead(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
+
+      return $mediaRootDir = $reader->getAbsolutePath(self::ITEM_PATH);
+   }
+
+   static function getItemMediaImageUrl()
+   {
+      $om = \Magento\Framework\App\ObjectManager::getInstance();
+      $storeManager = $om->get('Magento\Store\Model\StoreManagerInterface');
+   	/** @var \Magento\Store\Api\Data\StoreInterface|\Magento\Store\Model\Store $currentStore */
+   	$currentStore = $storeManager->getStore();
+
+      return $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA).self::ITEM_PATH;
    }
 }
