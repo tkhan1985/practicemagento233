@@ -66,7 +66,7 @@ class Reward extends Template
       ->setFromDate($coupon['start'])
       ->setToDate($coupon['end'])
       ->setUsesPerCustomer($coupon['max_redemptions'])
-      ->setCustomerGroupIds(array('1','2','3')) //select customer group
+      ->setCustomerGroupIds(array('1','2','3')) //select customer group pass 0 for non logged in user
       ->setIsActive(1)
       ->setSimpleAction($coupon['discount_type'])
       ->setDiscountAmount($coupon['discount_amount'])
